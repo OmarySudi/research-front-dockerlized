@@ -2,19 +2,28 @@
   <div class="home">
    
    <div class="container-fluid">
+     <div v-if="!authenticated">
+      <center>
+        <span class="text-danger font-weight-bold">Login to apply for a call</span>
+      </center>
+     </div>
+   
+
     <v-data-table
       :headers="call_headers"
       class="mt-5"
       :items="getCalls"
     >
         <template v-slot:item.actions="{ item }">
-          <button 
-            type="button" 
+
+          <v-btn
             @click.prevent="viewDetail(item)" 
-            class="btn btn-sm btn-primary mr-2"
+            small
+            color="primary"
+            :disabled="!authenticated"
           >
             VIEW DETAILS
-          </button>
+          </v-btn>
         </template>
     </v-data-table>
    </div>
