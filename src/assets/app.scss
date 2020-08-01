@@ -1,0 +1,12 @@
+@import '~bootstrap/scss/bootstrap';
+
+@media only screen and (max-width: 600px) {
+    
+    .brand{
+        font-size: small;
+    }
+
+    .custom-card{
+        min-width: 18rem;
+    }
+  }
