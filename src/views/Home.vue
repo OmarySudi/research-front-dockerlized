@@ -14,13 +14,18 @@
       class="mt-5"
       :items="getCalls"
     >
+
+        <template v-slot:item.budget="{ item }">
+            {{item.currency}} {{ item.budget}}
+        </template>
+
         <template v-slot:item.actions="{ item }">
 
           <v-btn
             @click.prevent="viewDetail(item)" 
             small
-            color="primary"
             :disabled="!authenticated"
+            color="primary"
           >
             VIEW DETAILS
           </v-btn>
@@ -62,13 +67,8 @@ export default {
 
     viewDetail(item){
 
-      if(this.authenticated)
-        console.log("you are authenticated "+item.name)
-      else(
-        console.log("you are not authenticated "+item.name)
-      )
-    }
-
+      this.$router.push({name: 'call', params: {id: item.id}});
+    },
   },
   computed: {
     ...mapGetters(['getCalls','authenticated']),

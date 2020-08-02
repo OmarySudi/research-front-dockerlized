@@ -6,6 +6,11 @@ const UserService = {
 
         
         return ApiService.post("/user/register",registration_form);
+    },
+
+    view_call: (id) => {
+
+        return ApiService.get("/calls/"+id);
     }
 }
 
