@@ -44,7 +44,17 @@ const AdminService = {
     deleteArea: (data) => {
 
         return ApiService.post('/areas/delete',data);
-    }
+    },
+
+    awardBid: (data) => {
+
+        return ApiService.post('/bids/award',data);
+    },
+
+    cancelAward: (data) => {
+
+        return ApiService.post('/bids/cancel',data);
+    },
 }
 
 export default AdminService;

@@ -3,6 +3,30 @@
 
         <Alert v-bind:alertData="alertData"/>
 
+        <v-dialog v-model="awardDialog" persistent max-width="450">
+          <v-card>
+            <v-card-title class="card-title">Are you sure you want to award this user?</v-card-title>
+            
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="awardDialog = false">NO</v-btn>
+              <v-btn text @click="awardBid">YES</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="cancelAwardDialog" persistent max-width="450">
+          <v-card>
+            <v-card-title class="card-title">Are you sure you want to cancel award?</v-card-title>
+            
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="cancelAwardDialog = false">NO</v-btn>
+              <v-btn text @click="cancelAward">YES</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
         <v-dialog v-model="callDialog" max-width="700px">
           <div class="card">
 
@@ -218,7 +242,7 @@
         <v-dialog v-model="deleteFunderDialog" max-width="500px">
          
           <v-card>
-            <v-card-title style="background:rgba(120,140,177,0.6)">
+            <v-card-title class="card-title">
               Are you sure you want to delete this record?
             </v-card-title>
 
@@ -735,23 +759,23 @@
                           >
                                 <template v-slot:item.actions="{ item }">
 
-                                  <button 
+                                  <!-- <button 
                                     type="button" 
                                     @click.prevent="awardBid(item)" 
                                     class="btn btn-sm btn-primary mr-2">
                                     view
-                                  </button>
+                                  </button> -->
 
                                   <button 
                                     type="button" 
-                                    @click.prevent="awardBid(item)" 
+                                    @click.prevent="showAwardDialog(item)" 
                                     class="btn btn-sm btn-primary mr-2">
                                    award
                                   </button>
 
                                   <button 
                                     type="button" 
-                                    @click.prevent="denyBid(item)" 
+                                    @click.prevent="showCancelAwardDialog(item)" 
                                     class="btn btn-sm btn-primary btn-danger">
                                    Deny
                                   </button>
@@ -888,6 +912,9 @@ export default {
         call:{},
 
         bids:[],
+        selectedBid:{},
+        awardDialog: false,
+        cancelAwardDialog:false,
 
         area_headers:[
 
@@ -948,7 +975,90 @@ export default {
     denyBid(){
 
     },
-    awardBid(){
+
+    showAwardDialog(item){
+
+      this.selectedBid = item;
+
+      this.awardDialog = true;
+    },
+
+    showCancelAwardDialog(item){
+
+      this.selectedBid = item;
+
+      this.cancelAwardDialog = true;
+    },
+
+    async cancelAward(){
+
+      let data = {
+        call_id: this.selectedBid.call_id
+      }
+
+      await AdminService.cancelAward(data).then((response)=>{
+
+        switch(response.data.genralErrorCode){
+
+              case 8000:
+
+                  this.cancelAwardDialog = false;
+
+                  this.showSuccessAlert(response.data.message);
+                 
+                break;
+
+              case 8003:
+
+                  this.cancelAwardDialog = false;
+
+                  this.showErrorAlert(response.data.message);
+
+                break;
+            }
+      }).catch(()=>{
+
+          this.cancelAwardDialog = false;
+
+          this.showErrorAlert(this.$store.state.error_message);
+      })
+    },
+
+    async awardBid(){
+
+      
+
+      let data = {
+        user_id:this.selectedBid.user_id,
+        call_id:this.selectedBid.call_id
+      }
+
+      await AdminService.awardBid(data).then((response)=>{
+
+        switch(response.data.genralErrorCode){
+
+              case 8000:
+
+                  this.awardDialog = false;
+
+                  this.showSuccessAlert(response.data.message);
+                 
+                break;
+
+              case 8003:
+
+                  this.awardDialog = false;
+
+                  this.showErrorAlert(response.data.message);
+
+                break;
+            }
+      }).catch(()=>{
+
+          this.awardDialog = false;
+
+          this.showErrorAlert(this.$store.state.error_message);
+      })
 
     },
 
@@ -1662,6 +1772,11 @@ export default {
 
     z-index: 9;
 
+ }
+
+ .card-title{
+
+  background:rgba(120,140,177,0.6)
  }
 
 </style>
