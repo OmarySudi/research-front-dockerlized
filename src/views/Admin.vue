@@ -269,7 +269,7 @@
                     <!-- <a class="list-group-item list-group-item-action active" data-toggle="list" href="#home" role="tab">Home</a>-->
                     <a class="list-group-item list-group-item-action active" data-toggle="list" href="#clientCalls" role="tab">All Calls</a>
                     <a class="list-group-item list-group-item-action" @click="fetchAllFunders" data-toggle="list" href="#calls" role="tab">Post call</a>
-                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#bids" role="tab">Bids</a>
+                    <a class="list-group-item list-group-item-action" style="display: none" id="bidsButton" data-toggle="list" href="#bids" role="tab">Bids</a>
                     <a class="list-group-item list-group-item-action" data-toggle="list" href="#addFunder" role="tab">Add funder</a>
                     <a class="list-group-item list-group-item-action" @click="fetchAllFunders" data-toggle="list" href="#AllFunders" role="tab">All funders</a>
                     <a class="list-group-item list-group-item-action" @click="fetchAllAreas" data-toggle="list" href="#Areas" role="tab">Areas of research</a>
@@ -287,6 +287,10 @@
                               :headers="call_headers"
                               :items="getCalls"
                             >
+                                <template v-slot:item.bids_count="{item}">
+                                  <h5><span class="badge badge-info">{{item.bids_count}}</span></h5>
+                                </template>
+
                                 <template v-slot:item.actions="{ item }">
                                   <button 
                                     type="button" 
@@ -300,6 +304,13 @@
                                     @click="deleteCall(item)" 
                                     class="btn  btn-sm btn-danger">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
+                                  </button>
+
+                                  <button 
+                                    type="button" 
+                                    @click="viewBids(item)" 
+                                    class="btn btn-primary btn-sm ml-3">
+                                    view bids
                                   </button>
                                   
                                 </template>
@@ -693,85 +704,63 @@
                         <div class="table-responsive">
 
                           <p class="text-center font-weight-bold">CALL</p>
-                          <table class="table table-bordered" style="width: 90%;">
+                          <table class="table table-bordered" style="background: white">
               
                             <thead>
                               <tr>
                                 <th scope="col">FUNDER</th>
-                                <th scope="col">MAX BUDGET </th>
+                                <th scope="col">AREAS OF RESEARCH</th>
+                                <th scope="col">BUDGET</th>
                                 <th scope="col">DEADLINE</th>
-                                <th scope="col">AREAS</th>
-                                <th></th>
+                                <th scope="col">BIDS</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
-                                <td>SIDA</td>
-                                <td>$100,000</td>
-                                <td>25-10-2021</td>
-                                <td>GENDER, ICT, EDUCATION, AGRICULTURE</td>
-                                <td>
-                                  <button type="button" class="btn btn-sm btn-primary">VIEW CALL</button>
-                                  <button type="button" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                                  <button type="button" class="btn  btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                </td>
+                                <td>{{this.viewedCall.name}}</td>
+                                <td>{{ this.viewedCall.areas_of_research}}</td>
+                                <td>{{this.viewedCall.currency}} {{this.viewedCall.budget}}</td>
+                                <td>{{ this.viewedCall.deadline}}</td>
+                                <td><h5><span class="badge badge-info">{{ this.viewedCall.bids_count}}</span></h5></td>
+                               
                               </tr>
                             </tbody>
                           </table>
 
+                          <p class="text-center font-weight-bold">BIDS</p>
 
-                          <p class="text-center mt-4 font-weight-bold">BIDS</p>
-                          <table class="table table-bordered" style="width: 90%;">
-              
-                            <thead>
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">FIRST NAME</th>
-                                <th scope="col">LAST NAME </th>
-                                <th scope="col">FACULTY</th>
-                                <th scope="col">DEPARTMENT</th>
-                                <th></th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <th scope="row">1</th>
-                                <td>SALMIN</td>
-                                <td>MOHAMEDI</td>
-                                <td>NETWORKING</td>
-                                <td>ICT</td>
-                                <td>
-                                  <button type="button" class="btn btn-sm btn-primary">VIEW BID</button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <th scope="row">2</th>
-                                <td>SALMIN</td>
-                                <td>MOHAMEDI</td>
-                                <td>NETWORKING</td>
-                                <td>ICT</td>
-                                <td>
-                                  <button type="button" class="btn btn-sm btn-primary">VIEW BID</button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <th scope="row">3</th>
-                                <td>SALMIN</td>
-                                <td>MOHAMEDI</td>
-                                <td>NETWORKING</td>
-                                <td>ICT</td>
-                                <td>
-                                  <button type="button" class="btn btn-sm btn-primary">VIEW BID</button>
-                                </td>
-                              </tr>
-                            </tbody>
-                
-                          </table>
-              
+                          <v-data-table
+                            :headers="bids_headers"
+                            :items="bids"
+                          >
+                                <template v-slot:item.actions="{ item }">
+
+                                  <button 
+                                    type="button" 
+                                    @click.prevent="awardBid(item)" 
+                                    class="btn btn-sm btn-primary mr-2">
+                                    view
+                                  </button>
+
+                                  <button 
+                                    type="button" 
+                                    @click.prevent="awardBid(item)" 
+                                    class="btn btn-sm btn-primary mr-2">
+                                   award
+                                  </button>
+
+                                  <button 
+                                    type="button" 
+                                    @click.prevent="denyBid(item)" 
+                                    class="btn btn-sm btn-primary btn-danger">
+                                   Deny
+                                  </button>
+                                  
+                                </template>
+                          </v-data-table>
+                          
                         </div>
-
                       </div>
-
                     </div>
                   </div>
             </div>
@@ -861,6 +850,21 @@ export default {
           { text: 'ACTIONS', class: 'font-weight-bold text-body-1', value: 'actions', sortable: false },
         ],
 
+        bids_headers:[
+          {
+            text: 'FIRST NAME',
+            align: 'start',
+            value: 'first_name',
+            class: 'font-weight-bold text-body-1'
+          },
+          { text: 'LAST NAME', class: 'font-weight-bold text-body-1', value: 'last_name' },
+          { text: 'EMAIL', class: 'font-weight-bold text-body-1', value: 'email' },
+          { text: 'MOBILE NUMBER', class: 'font-weight-bold text-body-1', value: 'mobile_number'},
+          // { text: 'DEPARTMENT', class: 'font-weight-bold text-body-1', value: 'department'},
+          // { text: 'FACULTY', class: 'font-weight-bold text-body-1', value: 'faculty'},
+          { text: 'ACTIONS', class: 'font-weight-bold text-body-1', value: 'actions', sortable: false },
+        ],
+
         call_headers:[
           {
             text: 'FUNDER',
@@ -871,6 +875,7 @@ export default {
           { text: 'AREAS OF RESEACH', class: 'font-weight-bold text-body-1',value: 'areas_of_research',sortable: false },
           { text: 'BUDGET', value: 'budget', class: 'font-weight-bold text-body-1',sortable: false },
           { text: 'DEADLINE', value: 'deadline', class: 'font-weight-bold text-body-1',sortable: false },
+          { text: 'BIDS', value: 'bids_count', class: 'font-weight-bold text-body-1',sortable: false },
           { text: 'ACTIONS', value: 'actions', class: 'font-weight-bold text-body-1',sortable: false },
         ],
 
@@ -879,7 +884,10 @@ export default {
         fundersMap:{},
         editedFunder:[],
         editedCall:{},
+        viewedCall:{},
         call:{},
+
+        bids:[],
 
         area_headers:[
 
@@ -937,6 +945,38 @@ export default {
 
     },
 
+    denyBid(){
+
+    },
+    awardBid(){
+
+    },
+
+    async fetchBids(id){
+
+      await SystemService.fetchBids(id).then((response)=>{
+
+        switch(response.data.genralErrorCode){
+
+              case 8000:
+
+                  // this.showSuccessAlert(response.data.message);
+                  this.bids = response.data.objects;
+
+                break;
+
+              case 8001:
+
+                  this.showErrorAlert(response.data.message);
+
+                break;
+            }
+      }).catch(()=>{
+
+          this.showErrorAlert(this.$store.state.error_message);
+      });
+    },
+
     fetchAllAreas(){
 
        SystemService.fetchAllAreas().then((response)=>{
@@ -948,6 +988,16 @@ export default {
 
        });
       
+    },
+
+    viewBids(item){
+
+      this.viewedCall = item;
+
+      this.fetchBids(item.id);
+
+      document.getElementById('bidsButton').click();
+
     },
     
     async editPost(){
@@ -1154,7 +1204,7 @@ export default {
 
         this.editedCall = item;
 
-        this.getCall(item.id);
+        this.getCallInfo(item.id);
 
         this.callDialog = true;
       },
@@ -1163,6 +1213,20 @@ export default {
       async getCall($id){
 
         await SystemService.getCall($id).then((response)=>{
+
+          this.call = response.data.objects;
+
+          console.log("call is "+this.call.areas_of_research_names);
+
+        }).catch(()=>{
+
+        });
+
+      },
+
+      async getCallInfo($id){
+
+        await SystemService.getCallInfo($id).then((response)=>{
 
           this.call = response.data.objects;
 

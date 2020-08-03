@@ -11,6 +11,11 @@ const UserService = {
     view_call: (id) => {
 
         return ApiService.get("/calls/"+id);
+    },
+
+    send_application: (data)=>{
+
+        return ApiService.post("/bids/create",data);
     }
 }
 
