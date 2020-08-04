@@ -315,6 +315,10 @@
                                   <h5><span class="badge badge-info">{{item.bids_count}}</span></h5>
                                 </template>
 
+                                <template v-slot:item.budget="{item}">
+                                  {{item.currency}} {{ item.budget}}
+                                </template>
+
                                 <template v-slot:item.status="{item}">
                                   
                                   <v-chip v-show="item.status == 'open'" color="rgba(227,194,62,0.5)">{{item.status}}</v-chip>
