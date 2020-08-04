@@ -3,6 +3,29 @@
 
         <Alert v-bind:alertData="alertData"/>
 
+        <v-dialog v-model="userDialog" max-width="450">
+          <v-card>
+            <v-card-title class="card-title">User Details</v-card-title>
+            <v-card-text>
+              <div class="row">
+              <ul class="list-group">
+                <li class="list-group-item"><span class="font-weight-bold">FIRST NAME:</span> {{this.selectedUser.first_name}}</li>
+                <li class="list-group-item"><span class="font-weight-bold">LAST NAME: </span>{{this.selectedUser.last_name}}</li>
+                <li class="list-group-item"><span class="font-weight-bold">EMAIL ADDRESS: </span>{{ this.selectedUser.email}}</li>
+                <li class="list-group-item"><span class="font-weight-bold">MOBILE NUMBER: </span>{{ this.selectedUser.mobile_number}}</li>
+                <li class="list-group-item"><span class="font-weight-bold">FACULTY: </span>{{ this.selectedUser.faculty}}</li>
+                <li class="list-group-item"><span class="font-weight-bold">DEPARTMENT: </span>{{ this.selectedUser.department}}</li>
+                 <li class="list-group-item"><span class="font-weight-bold">AREAS OF RESEARCH: </span>{{ this.selectedUser.areas_of_research}}</li>
+              </ul>
+              </div>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="userDialog = false">CANCEL</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
         <v-dialog v-model="awardDialog" persistent max-width="450">
           <v-card>
             <v-card-title class="card-title">Are you sure you want to award this user?</v-card-title>
@@ -26,6 +49,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+
 
         <v-dialog v-model="callDialog" max-width="700px">
           <div class="card">
@@ -794,12 +818,12 @@
                               >
                                 <template v-slot:item.actions="{ item }">
 
-                                  <!-- <button 
+                                  <button 
                                     type="button" 
-                                    @click.prevent="awardBid(item)" 
+                                    @click.prevent="viewUser(item)" 
                                     class="btn btn-sm btn-primary mr-2">
                                     view
-                                  </button> -->
+                                  </button>
 
                                   <button 
                                     type="button" 
@@ -953,6 +977,9 @@ export default {
         selectedBid:{},
         awardDialog: false,
         cancelAwardDialog:false,
+
+        selectedUser: {},
+        userDialog: false,
 
         area_headers:[
 
@@ -1595,6 +1622,14 @@ export default {
        this.area = Object.assign({}, item)
 
        this.area_dialog = true;
+
+      },
+
+      viewUser(item){
+
+        this.selectedUser = item;
+
+        this.userDialog = true;
 
       },
 
