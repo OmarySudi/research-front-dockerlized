@@ -315,6 +315,12 @@
                                   <h5><span class="badge badge-info">{{item.bids_count}}</span></h5>
                                 </template>
 
+                                <template v-slot:item.status="{item}">
+                                  
+                                  <v-chip v-show="item.status == 'open'" color="rgba(227,194,62,0.5)">{{item.status}}</v-chip>
+                                  <v-chip v-show="item.status == 'awarded'" color="rgba(62,227,197,0.5)">{{item.status}}</v-chip>
+                                </template>
+
                                 <template v-slot:item.actions="{ item }">
                                   <button 
                                     type="button" 
@@ -724,7 +730,9 @@
                     <div class="tab-pane" id="bids" role="tabpanel">
 
                       <div class="row">
-
+                        
+                        <span v-show="this.viewedCall.status == 'awarded'">Awarded user : <v-chip color="rgba(62,227,197,0.5)">{{this.viewedCall.user_id}}</v-chip></span>
+                        
                         <div class="table-responsive">
 
                           <p class="text-center font-weight-bold">CALL</p>
@@ -737,6 +745,7 @@
                                 <th scope="col">BUDGET</th>
                                 <th scope="col">DEADLINE</th>
                                 <th scope="col">BIDS</th>
+                                <th scope="col">STATUS</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -746,17 +755,39 @@
                                 <td>{{this.viewedCall.currency}} {{this.viewedCall.budget}}</td>
                                 <td>{{ this.viewedCall.deadline}}</td>
                                 <td><h5><span class="badge badge-info">{{ this.viewedCall.bids_count}}</span></h5></td>
+                                <td>
+                                  
+                                  <v-chip v-show="this.viewedCall.status == 'open'" color="rgba(227,194,62,0.5)">{{ this.viewedCall.status}}</v-chip>
+                                  <v-chip v-show="this.viewedCall.status == 'awarded'" color="rgba(62,227,197,0.5)">{{ this.viewedCall.status}}</v-chip>
+                                </td>
                                
                               </tr>
                             </tbody>
                           </table>
 
-                          <p class="text-center font-weight-bold">BIDS</p>
+                          <p class="text-center font-weight-bold">
+                            BIDS
+                            </p>
+                            
 
-                          <v-data-table
-                            :headers="bids_headers"
-                            :items="bids"
-                          >
+                            <v-card>
+                              <v-card-title>
+                                <!-- BIDS -->
+                                <v-spacer></v-spacer>
+                                <v-text-field
+                                  v-model="search"
+                                  append-icon="mdi-magnify"
+                                  label="Search"
+                                  single-line
+                                  hide-details
+                                ></v-text-field>
+                              </v-card-title>
+
+                              <v-data-table
+                                :headers="bids_headers"
+                                :items="bids"
+                                :search="bids_search"
+                              >
                                 <template v-slot:item.actions="{ item }">
 
                                   <!-- <button 
@@ -781,8 +812,8 @@
                                   </button>
                                   
                                 </template>
-                          </v-data-table>
-                          
+                              </v-data-table>
+                            </v-card>
                         </div>
                       </div>
                     </div>
@@ -863,6 +894,8 @@ export default {
 
         delete_area_dialog: false,
 
+        bids_search:'',
+
         headers:[
           {
             text: 'NAME',
@@ -900,6 +933,7 @@ export default {
           { text: 'BUDGET', value: 'budget', class: 'font-weight-bold text-body-1',sortable: false },
           { text: 'DEADLINE', value: 'deadline', class: 'font-weight-bold text-body-1',sortable: false },
           { text: 'BIDS', value: 'bids_count', class: 'font-weight-bold text-body-1',sortable: false },
+          { text: 'STATUS', value: 'status', class: 'font-weight-bold text-body-1',sortable: false },
           { text: 'ACTIONS', value: 'actions', class: 'font-weight-bold text-body-1',sortable: false },
         ],
 
@@ -1029,7 +1063,7 @@ export default {
       
 
       let data = {
-        user_id:this.selectedBid.user_id,
+        email:this.selectedBid.email,
         call_id:this.selectedBid.call_id
       }
 
@@ -1103,6 +1137,8 @@ export default {
     viewBids(item){
 
       this.viewedCall = item;
+
+      // if(this.viewedCall.status === 'awarded')
 
       this.fetchBids(item.id);
 
