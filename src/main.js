@@ -12,7 +12,7 @@ import 'bootstrap';
 import './assets/app.scss';
 
 //ApiService.init('/rapp/api/v1');
-ApiService.init('http://localhost:8005/api/v1');
+ApiService.init('http://192.241.30.51:8005/api/v1');
 
 require('@/store/subscriber')
 
