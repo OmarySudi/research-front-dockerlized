@@ -62,7 +62,7 @@
               <v-form ref="form">
                   
                   <div class="row">
-                      <div class="col-sm-12 col-md-4">
+                      <div class="col-sm-12 col-md-3">
                           <div class="form-group">
                               <label for="inputEmail3">FUNDER<span class="text-danger">  *</span></label>
           
@@ -77,10 +77,27 @@
                           </div>
                       </div>
 
-                      <div class="col-sm-12 col-md-4">
+
+                    
+                      <div class="col-sm-12 col-md-3">
+
+                        <div class="form-group">
+                            <label for="currency">CURRENCY</label>
+                            <v-select 
+                                :items="currencies"
+                                outlined
+                                v-model.trim="editedCall.currency"
+                                required
+                            >
+                            </v-select>
+                        </div>
+
+                      </div>
+
+                      <div class="col-sm-12 col-md-3">
 
                           <div class="form-group">
-                              <label for="inputPassword3">MAX BUDGET<span class="text-danger">  *</span></label>
+                              <label for="inputPassword3"> MAX BUDGET<span class="text-danger">  *</span></label>
                               <v-text-field 
                                       
                                       type="text"
@@ -88,14 +105,12 @@
                                       v-model.trim="editedCall.budget" 
                                       required
                                   >  
-
-                                
                               </v-text-field>
                           </div>
 
                       </div>
 
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-12 col-md-3">
 
                             <div class="form-group">
                               <label for="inputPassword3">DEADLINE<span class="text-danger">  *</span></label>
@@ -137,7 +152,7 @@
                       <v-select 
                           :items="areas_of_research"
                           multiple
-                          v-model.trim="call.areas_of_research_names"
+                          v-model="call.areas_of_research_names"
                           required
                       >
 
@@ -581,7 +596,22 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-12 col-md-4">
+                                    <div class="col-sm-12 col-md-2">
+
+                                        <div class="form-group">
+                                            <label for="currency">CURRENCY</label>
+                                            <v-select 
+                                                :items="currencies"
+                                                outlined
+                                                v-model.trim="currency"
+                                                required
+                                            >
+                                            </v-select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-2">
 
                                         <div class="form-group">
                                             <label for="inputPassword3">MAX BUDGET<span class="text-danger">  *</span></label>
@@ -894,6 +924,11 @@ export default {
         areas:[],
         description:'',
 
+        currencies: ['TZS','$'],
+        currency: 'TZS',
+
+        editedCallAreas:[],
+
         area_3:'',
         area_1:'',
         area_2:'',
@@ -923,6 +958,7 @@ export default {
         delete_area_dialog: false,
 
         bids_search:'',
+        search:'',
 
         headers:[
           {
@@ -1192,6 +1228,7 @@ export default {
           call.append('budget', this.editedCall.budget);
           call.append('deadline', this.editedCall.deadline);
           call.append('description', this.editedCall.description);
+          call.append('currency',this.editedCall.currency);
           call.append('status','open');
         
           if(this.editedCall.area_1 !== '')
@@ -1272,6 +1309,7 @@ export default {
           call.append('budget', this.budget);
           call.append('deadline', this.deadline);
           call.append('description', this.description);
+          call.append('currency',this.currency);
           call.append('status','open');
         
           if(this.area_1 !== '')
@@ -1406,6 +1444,8 @@ export default {
         await SystemService.getCallInfo($id).then((response)=>{
 
           this.call = response.data.objects;
+
+          this.editedCallAreas = this.call.areas_of_research.split(',');
 
         }).catch(()=>{
 

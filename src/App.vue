@@ -501,6 +501,7 @@ export default {
     mobile_number:'',
     facult:'',
     selected_areas:[],
+    areas_selected_by_user:'',
     registration_password:'',
     password_confirm:'',
 
@@ -681,7 +682,7 @@ export default {
 
             if(this.user !== null){
 
-              console.log('user set')
+              // console.log('user set')
               this.clearLoginError();
 
               document.getElementById('close-button').click();
@@ -790,12 +791,17 @@ export default {
         if(this.research_system_admin_role !== '')
           registration_form.append('research_system_admin_role', this.research_system_admin_role);
 
+
+    
+
         for(var i=0; i< this.selected_areas.length; i++)
         {
           let id = this.fetchId(this.selected_areas[i]);
 
           registration_form.append('areas_of_research['+ i +']',id);
+
           registration_form.append('areas_of_research_names['+ i +']',this.selected_areas[i]);
+
         }
           
         UserService.submit_registration_request(registration_form).then((response)=>{
@@ -826,7 +832,7 @@ export default {
 
           }
         }).catch(()=>{
-              console.log(this.$store.state.error_message);
+              // console.log(this.$store.state.error_message);
 
               document.getElementById('close-button').click();
 
