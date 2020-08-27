@@ -152,7 +152,7 @@
                       <v-select 
                           :items="areas_of_research"
                           multiple
-                          v-model="call.areas_of_research_names"
+                          v-model="editedCallAreas"
                           required
                       >
 
@@ -220,8 +220,6 @@
                     </div>
                   </div>
 
-                  
-
                   <div class="form-group">
                       <label for="inputPassword3" class="col-sm-4 col-form-label">DESCRIPTION<span class="text-danger">  *</span></label>
                       
@@ -232,6 +230,22 @@
                           rows="3"
                           auto-grow
                           v-model.trim="editedCall.description" 
+                          required
+                      >  
+
+                      </v-textarea>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="call_link" class="col-sm-4 col-form-label">CALL LINK<span class="text-danger">  *</span></label>
+                      
+                      <v-textarea
+                          
+                          type="text"
+                          outlined
+                          rows="3"
+                          auto-grow
+                          v-model.trim="editedCall.call_link" 
                           required
                       >  
 
@@ -751,8 +765,6 @@
                                   </div>
                                 </div>
 
-                                
-
                                 <div class="form-group">
                                     <label for="inputPassword3" class="col-sm-4 col-form-label">DESCRIPTION<span class="text-danger">  *</span></label>
                                     
@@ -768,6 +780,26 @@
                                         required
                                         @input="$v.description.$touch()"
                                         @blur="$v.description.$touch()"
+                                    >  
+
+                                    </v-textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="call_link" class="col-sm-4 col-form-label">CALL LINK<span class="text-danger">  *</span></label>
+                                    
+                                    <v-textarea
+                                        
+                                        type="text"
+                                        outlined
+                                        rows="3"
+                                        auto-grow
+                                        v-model.trim="link" 
+                                        :error-messages="linkErrors"
+                                        :error-count="5" 
+                                        required
+                                        @input="$v.link.$touch()"
+                                        @blur="$v.link.$touch()"
                                     >  
 
                                     </v-textarea>
@@ -908,6 +940,7 @@ export default {
     deadline:{required},
     areas:{required},
     description:{required},
+    link:{required},
 
   },
 
@@ -923,6 +956,7 @@ export default {
         time: new Date().toISOString().substr(0, 10),
         areas:[],
         description:'',
+        link:'',
 
         currencies: ['TZS','$'],
         currency: 'TZS',
@@ -1217,8 +1251,9 @@ export default {
         if((this.editedCall.funder !== '')
             && (this.editedCall.budget !== '')
             && (this.editedCall.deadline !== '')
-            && (this.call.areas_of_research_names.length > 0)
+            && (this.editedCallAreas.length > 0)
             && (this.editedCall.description !== '')  
+            && (this.editedCall.call_link !== '')  
           )
         {
 
@@ -1229,6 +1264,7 @@ export default {
           call.append('deadline', this.editedCall.deadline);
           call.append('description', this.editedCall.description);
           call.append('currency',this.editedCall.currency);
+          call.append('call_link',this.editedCall.call_link);
           call.append('status','open');
         
           if(this.editedCall.area_1 !== '')
@@ -1240,13 +1276,21 @@ export default {
           if(this.editedCall.area_3 !== '')
             call.append('area_3',this.editedCall.area_3);
           
-          for(var i=0; i< this.call.areas_of_research_names.length; i++)
+          // for(var i=0; i< this.call.areas_of_research_names.length; i++)
+          // {
+            
+          //   let id = this.fetchId(this.call.areas_of_research_names[i]);
+
+          //   call.append('areas_of_research['+ i +']',id);
+          //   call.append('areas_of_research_names['+ i +']',this.call.areas_of_research_names[i]);
+          // }
+
+          for(var i=0; i< this.editedCallAreas.length; i++)
           {
             
-            let id = this.fetchId(this.call.areas_of_research_names[i]);
-
-            call.append('areas_of_research['+ i +']',id);
-            call.append('areas_of_research_names['+ i +']',this.call.areas_of_research_names[i]);
+            // let id = this.fetchId(this.editedCallAreas[i]);
+            // call.append('areas_of_research['+ i +']',id);
+            call.append('areas_of_research_names['+ i +']',this.editedCallAreas[i]);
           }
 
           call.append('id',this.call.id);
@@ -1300,6 +1344,7 @@ export default {
             && (this.deadline !== '' && this.deadlineErrors.length == 0)
             && (this.areas.length > 0 && this.areasErrors.length == 0)
             && (this.description !== '' && this.descriptionErrors.length == 0)  
+            && (this.link !== '' && this.linkErrors.length == 0) 
           )
         {
 
@@ -1310,6 +1355,7 @@ export default {
           call.append('deadline', this.deadline);
           call.append('description', this.description);
           call.append('currency',this.currency);
+          call.append('call_link',this.link);
           call.append('status','open');
         
           if(this.area_1 !== '')
@@ -1419,6 +1465,8 @@ export default {
 
         this.editedCall = item;
 
+        this.editedCallAreas = this.editedCall.areas.split(", ");
+
         this.getCallInfo(item.id);
 
         this.callDialog = true;
@@ -1445,7 +1493,7 @@ export default {
 
           this.call = response.data.objects;
 
-          this.editedCallAreas = this.call.areas_of_research.split(',');
+          // this.editedCallAreas = this.call.areas_of_research.split(',');
 
         }).catch(()=>{
 
@@ -1870,6 +1918,15 @@ export default {
         const errors = [];
         if (!this.$v.description.$dirty) return errors;
         !this.$v.description.required && errors.push('Description required');
+        return errors;
+
+      },
+
+       linkErrors(){
+
+        const errors = [];
+        if (!this.$v.link.$dirty) return errors;
+        !this.$v.link.required && errors.push('Link required');
         return errors;
 
       },
