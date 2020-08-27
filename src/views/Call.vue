@@ -23,9 +23,9 @@
                 <div class="col-sm-12">
                     <center>
                        
-                        <div v-show="user_call_exist" class="alert alert-success" role="alert">
+                        <!-- <div v-show="user_call_exist" class="alert alert-success" role="alert">
                             You have already applied this call
-                        </div>
+                        </div> -->
 
                         <div class="card" style="width:70%">
                             <h5 class="card-header text-center">Call #{{$route.params.id}}</h5>
@@ -44,7 +44,8 @@
                                     </div>
                                 </div>
                                 
-                                <button class="mt-4 btn btn-primary pull-right" :disabled="user_call_exist" data-toggle="modal" data-target="#applyModal">APPLY</button>
+                                <!-- <button class="mt-4 btn btn-primary pull-right" :disabled="user_call_exist" data-toggle="modal" data-target="#applyModal">APPLY</button> -->
+                                <button class="mt-4 btn btn-primary pull-right" data-toggle="modal" data-target="#applyModal">APPLY</button>
                                
                             </div>
                         </div>
@@ -55,7 +56,7 @@
 </template>
 <script>
 import UserService from '@/services/user.service'
-import SystemService from '@/services/system.service'
+// import SystemService from '@/services/system.service'
 import {mapGetters} from 'vuex'
 import Alert from '@/components/Alert.vue'
 import Mixin from '@/mixins/mixins.js'
@@ -71,37 +72,37 @@ export default {
 
         call:[],
 
-        user_call_exist: false,
+        // user_call_exist: false,
 
     }),
 
     methods:{
 
-        check_if_user_has_applied(){
+        // check_if_user_has_applied(){
 
-            let data = {
-                user_id: this.user.id,
-                call_id: this.$route.params.id
-            }
+        //     let data = {
+        //         user_id: this.user.id,
+        //         call_id: this.$route.params.id
+        //     }
 
-            SystemService.check_if_user_applied(data).then((response)=>{
+        //     SystemService.check_if_user_applied(data).then((response)=>{
 
-                switch(response.data.genralErrorCode)
-                {
-                    case 8000:
-                            this.user_call_exist = true;
-                        break;
+        //         switch(response.data.genralErrorCode)
+        //         {
+        //             case 8000:
+        //                     this.user_call_exist = true;
+        //                 break;
 
-                    case 8001:
-                            this.user_call_exist = false;
-                        break;
-                }
+        //             case 8001:
+        //                     this.user_call_exist = false;
+        //                 break;
+        //         }
                 
-            }).catch(()=>{
+        //     }).catch(()=>{
 
-                this.showErrorAlert(this.$store.state.error_message);
-            })
-        },
+        //         this.showErrorAlert(this.$store.state.error_message);
+        //     })
+        // },
 
         sendApplication(){
            
@@ -171,7 +172,7 @@ export default {
     created(){
 
         this.fetchCall(this.$route.params.id);
-        this.check_if_user_has_applied();
+        // this.check_if_user_has_applied();
     }
 }
 </script>
