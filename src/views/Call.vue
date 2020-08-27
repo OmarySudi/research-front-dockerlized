@@ -107,7 +107,7 @@ export default {
            
             let data = {
                 user_id: this.user.id,
-                call_id: this.call.id
+                call_id: this.$route.params.id
             }
 
             UserService.send_application(data).then((response)=>{
@@ -118,17 +118,20 @@ export default {
 
                             document.getElementById('dataDismiss').click();
 
-                            this.setAlert(response.data.message,'success');
+                            // this.setAlert(response.data.message,'success');
                   
-                            setTimeout(()=>{
+                            // setTimeout(()=>{
 
-                                this.unsetAlert();
+                            //     this.unsetAlert();
 
-                                this.$router.replace({
-                                    name:'Home'
-                                });
+                            //     this.$router.replace({
+                            //         name:'Home'
+                            //     });
 
-                            },2000);
+                            // },2000);
+                            //window.open(this.call.call_link, '_blank')
+
+                            window.location.replace(this.call.call_link);
 
                         break;
 
