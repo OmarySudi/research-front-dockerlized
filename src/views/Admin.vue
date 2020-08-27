@@ -887,7 +887,7 @@
                                     view
                                   </button>
 
-                                  <button 
+                                  <!-- <button 
                                     type="button" 
                                     @click.prevent="showAwardDialog(item)" 
                                     class="btn btn-sm btn-primary mr-2">
@@ -899,7 +899,7 @@
                                     @click.prevent="showCancelAwardDialog(item)" 
                                     class="btn btn-sm btn-primary btn-danger">
                                    Deny
-                                  </button>
+                                  </button> -->
                                   
                                 </template>
                               </v-data-table>
