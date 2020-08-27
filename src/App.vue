@@ -8,7 +8,7 @@
     <nav class="navbar navbar-expand-md navbar-light pt-3  navbar-dark sticky-top" style="background: #3f51b5">
         <div class="container-fluid">
             <p class="navbar-brand font-weight-bold ml-5 pl-5 brand">
-                CALLS FOR COMPETITIVE RESEARCH
+                CONSULTANCY CALLS
             </p>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
