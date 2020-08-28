@@ -130,9 +130,9 @@ export default {
                             //     });
 
                             // },2000);
-                            //window.open(this.call.call_link, '_blank')
+                            window.open(this.call.call_link, '_blank')
 
-                            window.location.replace(this.call.call_link);
+                            //window.location.replace(this.call.call_link);
 
                         break;
 
