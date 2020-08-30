@@ -115,13 +115,12 @@
                       <div class="col-sm-12 col-md-3">
 
                           <div class="form-group">
-                              <label for="inputPassword3"> MAX BUDGET<span class="text-danger">  *</span></label>
+                              <label for="inputPassword3"> MAX BUDGET</label>
                               <v-text-field 
                                       
                                       type="text"
                                       outlined
                                       v-model.trim="editedCall.budget" 
-                                      required
                                   >  
                               </v-text-field>
                           </div>
@@ -386,9 +385,9 @@
                                   <h5><span class="badge badge-info">{{item.bids_count}}</span></h5>
                                 </template>
 
-                                <template v-slot:item.budget="{item}">
+                                <!-- <template v-slot:item.budget="{item}">
                                   {{item.currency}} {{ item.budget}}
-                                </template>
+                                </template> -->
 
                                 <template v-slot:item.status="{item}">
                                   
@@ -646,8 +645,8 @@
                                     <div class="col-sm-12 col-md-2">
 
                                         <div class="form-group">
-                                            <label for="inputPassword3">MAX BUDGET<span class="text-danger">  *</span></label>
-                                            <v-text-field 
+                                            <label for="inputPassword3">MAX BUDGET</label>
+                                            <!-- <v-text-field 
                                                     
                                                     type="text"
                                                     outlined
@@ -660,6 +659,13 @@
                                                 >  
 
                                               
+                                            </v-text-field> -->
+                                             <v-text-field 
+                                                    
+                                                    type="text"
+                                                    outlined
+                                                    v-model.trim="budget"     
+                                                >  
                                             </v-text-field>
                                         </div>
 
@@ -1075,10 +1081,10 @@ export default {
             class: 'font-weight-bold text-body-1'
           },
           { text: 'AREAS OF RESEACH', class: 'font-weight-bold text-body-1',value: 'areas_of_research',sortable: false },
-          { text: 'BUDGET', value: 'budget', class: 'font-weight-bold text-body-1',sortable: false },
+          // { text: 'BUDGET', value: 'budget', class: 'font-weight-bold text-body-1',sortable: false },
           { text: 'DEADLINE', value: 'deadline', class: 'font-weight-bold text-body-1',sortable: false },
           { text: 'BIDS', value: 'bids_count', class: 'font-weight-bold text-body-1',sortable: false },
-          { text: 'STATUS', value: 'status', class: 'font-weight-bold text-body-1',sortable: false },
+          // { text: 'STATUS', value: 'status', class: 'font-weight-bold text-body-1',sortable: false },
           { text: 'ACTIONS', value: 'actions', class: 'font-weight-bold text-body-1',sortable: false },
         ],
 
@@ -1321,7 +1327,6 @@ export default {
     
     async editPost(){
         if((this.editedCall.funder !== '')
-            && (this.editedCall.budget !== '')
             && (this.editedCall.deadline !== '')
             && (this.editedCallAreas.length > 0)
             && (this.editedCall.description !== '')  
@@ -1332,7 +1337,10 @@ export default {
           let call = new FormData();
 
           call.append('funder', this.editedCall.name);
-          call.append('budget', this.editedCall.budget);
+
+          if(this.editedCall.budget != '')
+             call.append('budget', this.editedCall.budget);
+        
           call.append('deadline', this.editedCall.deadline);
           call.append('description', this.editedCall.description);
           call.append('currency',this.editedCall.currency);
@@ -1424,7 +1432,6 @@ export default {
             this.other_areas = [];
 
         if((this.funder !== '' && this.funderErrors.length == 0)
-            && (this.budget !== '' && this.budgetErrors.length == 0)
             && (this.deadline !== '' && this.deadlineErrors.length == 0)
             && (this.areas.length > 0 && this.areasErrors.length == 0)
             && (this.description !== '' && this.descriptionErrors.length == 0)  
@@ -1435,7 +1442,10 @@ export default {
           let call = new FormData();
 
           call.append('funder', this.funder);
-          call.append('budget', this.budget);
+
+          if(this.budget !== '')
+            call.append('budget', this.budget);
+
           call.append('deadline', this.deadline);
           call.append('description', this.description);
           call.append('currency',this.currency);
@@ -1980,13 +1990,13 @@ export default {
         return errors;
       },
 
-      budgetErrors() {
+      // budgetErrors() {
 
-        const errors = [];
-        if (!this.$v.budget.$dirty) return errors;
-        !this.$v.budget.required && errors.push('Budget is required');
-        return errors;
-      },
+      //   const errors = [];
+      //   if (!this.$v.budget.$dirty) return errors;
+      //   !this.$v.budget.required && errors.push('Budget is required');
+      //   return errors;
+      // },
 
       deadlineErrors() {
         const errors = [];

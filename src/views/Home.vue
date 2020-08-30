@@ -15,9 +15,9 @@
       :items="getCalls"
     >
 
-        <template v-slot:item.budget="{ item }">
+        <!-- <template v-slot:item.budget="{ item }">
             {{item.currency}} {{ item.budget}}
-        </template>
+        </template> -->
 
         <template v-slot:item.actions="{ item }">
 
@@ -56,7 +56,7 @@ export default {
         class: 'font-weight-bold text-body-1'
       },
       { text: 'AREAS OF RESEACH', class: 'font-weight-bold text-body-1',value: 'areas_of_research',sortable: false },
-      { text: 'BUDGET', value: 'budget', class: 'font-weight-bold text-body-1',sortable: false },
+      // { text: 'BUDGET', value: 'budget', class: 'font-weight-bold text-body-1',sortable: false },
       { text: 'DEADLINE', value: 'deadline', class: 'font-weight-bold text-body-1',sortable: false },
       { text: 'ACTIONS', value: 'actions', class: 'font-weight-bold text-body-1',sortable: false },
     ],
