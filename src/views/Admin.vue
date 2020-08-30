@@ -38,6 +38,24 @@
           </v-card>
         </v-dialog>
 
+        <v-dialog v-model="fileTypeDialog" persistent max-width="450">
+          <v-card>
+            <!-- <v-card-title class="card-title">Are you sure you want to award this user?</v-card-title>
+            
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="awardDialog = false">NO</v-btn>
+              <v-btn text @click="awardBid">YES</v-btn>
+            </v-card-actions> -->
+            <v-alert 
+              type="warning"
+              >
+                The file extension is not supported
+            </v-alert>
+
+          </v-card>
+        </v-dialog>
+
         <v-dialog v-model="cancelAwardDialog" persistent max-width="450">
           <v-card>
             <v-card-title class="card-title">Are you sure you want to cancel award?</v-card-title>
@@ -805,6 +823,30 @@
                                     </v-textarea>
                                 </div>
 
+                                <div class="form-group">
+
+                                    <v-flex class="pt-3" >
+                                      <center>
+                                      <p class="mb-0 body-1 red--text">
+                                          Supported file types : <span class="font-weight-bold">.PDF .DOC .DOCX</span>
+                                      </p>
+                                      </center>
+                                    </v-flex>
+
+                                    <label for="call_document" class="col-sm-4 col-form-label">CALL FILE  </label>
+                                    <v-card flat outlined >
+                                      <v-file-input 
+                                        label="Document" 
+                                        id="document" 
+                                        :clearable="false"
+                                        @change="documentUpdated()"
+                                        prepend-icon ="mdi-cloud-upload"
+                                      >
+
+                                      </v-file-input>
+                                    </v-card>
+                                </div>
+
                                 <button type="button" @click="savePost" class="btn btn-primary mt-3 float-right">POST</button>
 
                             </v-form>
@@ -968,6 +1010,11 @@ export default {
         area_2:'',
         other_areas:[],
 
+        document:'',
+        
+        fileTypeDialog:false,
+        fileTypeError: false,
+
 
         display_call_validation_error:false,
 
@@ -1090,6 +1137,43 @@ export default {
 
       ...mapActions(['setCalls']),
 
+      getFileExtension(url){
+
+        let position = url.lastIndexOf('.');
+
+        let extracted_string = url.slice(position + 1, url.length + 1);
+
+        return extracted_string;
+
+      },
+
+      documentUpdated(){
+
+        let extension = this.getFileExtension(document.getElementById("document").files[0].name);
+
+        switch(extension){
+
+          case 'pdf':
+              this.fileTypeError = false;
+            break;
+          case 'doc':
+              this.fileTypeError = false;
+            break;
+          case 'docx':
+              this.fileTypeError = false;
+            break;
+          default:
+              this.fileTypeError = true;
+            break;
+        }
+
+        if(document.getElementById("document").files[0]){
+
+          this.document = document.getElementById("document").files[0];
+        }
+
+      },
+
       fetchId(name){
 
       let id;
@@ -1160,8 +1244,6 @@ export default {
     },
 
     async awardBid(){
-
-      
 
       let data = {
         email:this.selectedBid.email,
@@ -1337,7 +1419,19 @@ export default {
 
       async savePost(){
 
-        this.other_areas = [];
+        if(this.fileTypeError == true){
+
+          this.fileTypeDialog = true;
+
+          setTimeout(()=>{
+
+                 this.fileTypeDialog = false;
+
+            },2000);
+        } 
+        else {
+
+            this.other_areas = [];
 
         if((this.funder !== '' && this.funderErrors.length == 0)
             && (this.budget !== '' && this.budgetErrors.length == 0)
@@ -1357,6 +1451,10 @@ export default {
           call.append('currency',this.currency);
           call.append('call_link',this.link);
           call.append('status','open');
+
+          if(this.document !== ''){
+             call.append('document',this.document);
+          }
         
           if(this.area_1 !== '')
             call.append('area_1',this.area_1);
@@ -1400,6 +1498,7 @@ export default {
               this.display_call_validation_error = !this.display_call_validation_error;
             },3000);
 
+        }
         }
 
       },

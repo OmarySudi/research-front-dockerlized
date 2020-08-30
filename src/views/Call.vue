@@ -39,6 +39,8 @@
                                             <tr><td class="font-weight-bold">Budget :</td><td>{{ call.currency}} {{call.budget}}</td></tr>
                                             <tr><td class="font-weight-bold">Deadline :</td><td>{{call.deadline}}</td></tr>
                                             <tr><td class="font-weight-bold">Description :</td><td>{{ call.description}}</td></tr>
+
+                                            <tr v-if="call.file_url !== null"><td></td><td><button type="button" class="btn btn-secondary" @click="downloadFile(call.file_url)">Download file</button></td></tr>
                                             
                                         </table>
                                     </div>
@@ -56,6 +58,7 @@
 </template>
 <script>
 import UserService from '@/services/user.service'
+//import axios from 'axios'
 // import SystemService from '@/services/system.service'
 import {mapGetters} from 'vuex'
 import Alert from '@/components/Alert.vue'

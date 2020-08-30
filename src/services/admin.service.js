@@ -18,7 +18,11 @@ const AdminService = {
     },
 
     createCall: (data) => {
-        return ApiService.post("/calls/create",data);
+        return ApiService.post("/calls/create",data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+          });
     }, 
 
     updateCall: (id,data) => {
