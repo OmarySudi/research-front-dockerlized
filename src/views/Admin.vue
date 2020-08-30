@@ -1137,16 +1137,6 @@ export default {
 
       ...mapActions(['setCalls']),
 
-      getFileExtension(url){
-
-        let position = url.lastIndexOf('.');
-
-        let extracted_string = url.slice(position + 1, url.length + 1);
-
-        return extracted_string;
-
-      },
-
       documentUpdated(){
 
         let extension = this.getFileExtension(document.getElementById("document").files[0].name);
