@@ -269,6 +269,31 @@
                       </v-textarea>
                   </div>
 
+
+                  <div class="form-group">
+
+                    <v-flex class="pt-3" >
+                      <center>
+                      <p class="mb-0 body-1 red--text">
+                          Supported file types : <span class="font-weight-bold">.PDF .DOC .DOCX</span>
+                      </p>
+                      </center>
+                    </v-flex>
+
+                    <label for="call_document" class="col-sm-4 col-form-label">CALL FILE  </label>
+                    <v-card flat outlined >
+                      <v-file-input 
+                        label="Document" 
+                        id="edited_document" 
+                        :clearable="false"
+                        @change="documentEditingUpdated()"
+                        prepend-icon ="mdi-cloud-upload"
+                      >
+                      </v-file-input>
+                    </v-card>
+                  </div>
+
+                  
                   <button type="button" @click="editPost" class="btn btn-primary mt-3 float-right">SAVE</button>
 
               </v-form>
@@ -1174,6 +1199,33 @@ export default {
 
       },
 
+      documentEditingUpdated(){
+
+        let extension = this.getFileExtension(document.getElementById("edited_document").files[0].name);
+
+        switch(extension){
+
+          case 'pdf':
+              this.fileTypeError = false;
+            break;
+          case 'doc':
+              this.fileTypeError = false;
+            break;
+          case 'docx':
+              this.fileTypeError = false;
+            break;
+          default:
+              this.fileTypeError = true;
+            break;
+        }
+
+        if(document.getElementById("edited_document").files[0]){
+
+          this.document = document.getElementById("edited_document").files[0];
+        }
+
+      },
+
       fetchId(name){
 
       let id;
@@ -1351,6 +1403,10 @@ export default {
           call.append('call_link',this.editedCall.call_link);
           call.append('status','open');
         
+          if(this.document !== ''){
+             call.append('document',this.document);
+          }
+
           if(this.editedCall.area_1 !== '')
             call.append('area_1',this.editedCall.area_1);
 
