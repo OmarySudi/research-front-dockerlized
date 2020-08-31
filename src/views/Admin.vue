@@ -385,9 +385,12 @@
                                   <h5><span class="badge badge-info">{{item.bids_count}}</span></h5>
                                 </template>
 
-                                <!-- <template v-slot:item.budget="{item}">
-                                  {{item.currency}} {{ item.budget}}
-                                </template> -->
+                                <template v-slot:item.file_url="{item}">
+                                  
+                                  <div v-if="item.file_url">
+                                    <a @click="downloadFile(item.file_url)">Download</a>
+                                  </div>
+                                </template>
 
                                 <template v-slot:item.status="{item}">
                                   
@@ -1083,6 +1086,7 @@ export default {
           { text: 'AREAS OF RESEACH', class: 'font-weight-bold text-body-1',value: 'areas_of_research',sortable: false },
           // { text: 'BUDGET', value: 'budget', class: 'font-weight-bold text-body-1',sortable: false },
           { text: 'DEADLINE', value: 'deadline', class: 'font-weight-bold text-body-1',sortable: false },
+          { text: 'FILE', value: 'file_url', class: 'font-weight-bold text-body-1',sortable: false },
           { text: 'BIDS', value: 'bids_count', class: 'font-weight-bold text-body-1',sortable: false },
           // { text: 'STATUS', value: 'status', class: 'font-weight-bold text-body-1',sortable: false },
           { text: 'ACTIONS', value: 'actions', class: 'font-weight-bold text-body-1',sortable: false },
