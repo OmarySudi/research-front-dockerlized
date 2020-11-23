@@ -5,8 +5,9 @@
 
     <Alert v-bind:alertData="alertData"/>
                    
-    <nav class="navbar navbar-expand-md navbar-light pt-3  navbar-dark sticky-top" style="background: #3f51b5">
+    <nav class="navbar navbar-expand-md navbar-light pt-3  navbar-dark sticky-top header">
         <div class="container-fluid">
+
             <p class="navbar-brand font-weight-bold ml-5 pl-5 brand">
                 CONSULTANCY CALLS
             </p>
@@ -14,7 +15,7 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-        
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 <ul class="navbar-nav ml-auto">
@@ -925,4 +926,23 @@ export default {
   .v-main__wrap {
     background-color: rgba(199, 222, 240, 0.543);;
 }
+
+.header {
+  background: #3f51b5
+}
+
+.navbar-dark .navbar-nav .nav-link{
+  color:white;
+}
+
+@media only screen and (min-width: 768px) {
+  /* For desktop: */
+  .header{
+    background-image: url('duce.jpg');
+    background-repeat: no-repeat;
+    height:135px;
+  }
+}
+
+
 </style>
