@@ -702,8 +702,8 @@ export default {
 
               document.getElementById('close-button').click();
 
-              this.alertData.alert="You have successfully registered. Login to apply a call";
-              this.alertData.alert_type = 'success';
+              this.alertData.alert="There is a server problem.";
+              this.alertData.alert_type = 'error';
               this.alertData.display_alert = true;
               
               setTimeout(()=>{

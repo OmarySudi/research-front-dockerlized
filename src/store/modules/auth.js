@@ -75,7 +75,7 @@ export default {
                 switch(response.data.genralErrorCode){
 
                     case 8000:
-                       
+
                         store.commit('SET_LOGIN_ERROR','');
 
                         return store.dispatch('attempt',response.data.objects.original.access_token);
@@ -90,6 +90,9 @@ export default {
                             store.commit('SET_LOGIN_ERROR',message);
                         }
 
+                        break;
+                    default:
+                       
                         break;
                 }
 
@@ -136,6 +139,7 @@ export default {
                     }
                 })
                 .catch(()=>{
+
                     commit('SET_TOKEN',null);
                     commit('SET_USER',null);
                 });
