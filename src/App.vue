@@ -43,7 +43,7 @@
       </nav>
 
         
-        <div class="modal fade" id="logiForm" tabindex="-1" role="dialog" aria-labelledby="logiFormLabel" aria-hidden="true">
+        <!-- <div class="modal fade" id="logiForm" tabindex="-1" role="dialog" aria-labelledby="logiFormLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
@@ -255,7 +255,7 @@
                     <div class="col-xs-12 ml-4">
                           <div class="form-group">
                             <label for="areas" class="col-form-label">Areas of research <span class="text-danger">  *</span></label>
-                            <!-- <input class="form-control" type="text"> -->
+                            <input class="form-control" type="text">
                             <v-select 
                               :items="areas_of_research"
                               multiple
@@ -423,7 +423,7 @@
               
             </div>
           </div>
-        </div>
+        </div> -->
     
      <v-content>
          <router-view/>
@@ -433,7 +433,10 @@
       color="indigo"
       app
     >
-      <span class="white--text">&copy; {{ new Date().getFullYear() }}</span>
+
+        <div class="text-center ml-5">
+          <span class="white--text">&copy; {{ new Date().getFullYear() }} UDSM - All Rights Reserved</span>
+        </div>
     </v-footer>
   </v-app>
 
@@ -480,6 +483,7 @@ export default {
     display_registration_validation_error: false,
     display_registration_error: false,
     registration_error: '',
+
     display_login_validation_error:false,
     display_login_error: false,
     login_error: '',
@@ -934,6 +938,18 @@ export default {
 .navbar-dark .navbar-nav .nav-link{
   color:white;
 }
+
+.theme--light.v-input{
+
+  height:70px;
+}
+
+ .v-text-field .v-input__control .v-input__slot {
+    min-height: 45px !important;
+    display: flex !important;
+    align-items: center !important;
+    background:white;
+  }
 
 @media only screen and (min-width: 768px) {
   /* For desktop: */

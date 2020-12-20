@@ -127,10 +127,17 @@ export default {
                             // });
 
                             if(store.getters.user.research_system_admin_admin == 1)
+                            {
                                 router.replace({
                                     name:'Admin'
                                 });
-
+                            }
+                            else {
+                                router.replace({
+                                    name:'calls'
+                                });
+                            }
+                                
                             break;
     
                         case 8004:
