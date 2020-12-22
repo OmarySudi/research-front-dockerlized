@@ -423,9 +423,11 @@
 
 
                       <div class="" style="margin-top:10px">
-                        <a href="#" class="forgot-password" style="margin-top:10">
+                        <!-- <a href="#" class="forgot-password" style="margin-top:10">
                             Forgot Your Password?
-                        </a>
+                        </a> -->
+
+                         <router-link to="/password/reset" style="margin-top:10">Forgot Your Password?</router-link>
                       
                         <span></span><a href="#" data-toggle="modal" data-target="#logiForm">Register</a>
                       </div>

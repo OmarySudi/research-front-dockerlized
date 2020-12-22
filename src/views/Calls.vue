@@ -73,5 +73,9 @@ export default {
   computed: {
     ...mapGetters(['getCalls','authenticated']),
   },
+
+  created(){
+    this.setCalls();
+  }
 }
 </script>
