@@ -320,16 +320,14 @@
 
               <ol>
                 <li>
-                  <p><strong>Login</strong>&nbsp;with your "Username" and "Password". For the "Initial username", Use your surname as your initial username.<br>
-                    E.g. if your first-name is Juma, and Surname is Samson, then the initial username is <em><strong>samson</strong></em>. Initial password is number 1 to 8, please change your password after first-time login.
-                  </p>
+                  <p><strong>Login</strong>&nbsp;with your "Email" and "Password"</p>
                 </li>
                 <li>
-                  <p>In case login credentials as specified in no. 1 failed, mostly due to identical surname(s), in this case the initial username try one of the following combinations</p>
+                  <p>In case you don't have an account, click register link to create one</p>
                 </li>
               </ol> 
 
-              <ul>
+              <!-- <ul>
                 <li>
                   <p>firstname.surname&nbsp; &nbsp;(e.g: juma.samson)</p>
                 </li>
@@ -339,7 +337,7 @@
                 <li>
                   <p>fsurname&nbsp; &nbsp; (jsamsom)</p>
                 </li>
-              </ul>
+              </ul> -->
               
               <div class="mt-4"></div>
 
@@ -427,9 +425,9 @@
                             Forgot Your Password?
                         </a> -->
 
-                         <router-link to="/password/reset" style="margin-top:10">Forgot Your Password?</router-link>
+                        <router-link to="/password/reset" style="margin-top:10">Forgot Your Password?</router-link>
                       
-                        <span></span><a href="#" data-toggle="modal" data-target="#logiForm">Register</a>
+                        <span class="ml-5"><a href="#" data-toggle="modal" data-target="#logiForm">Register</a></span>
                       </div>
                         
                     </div>
