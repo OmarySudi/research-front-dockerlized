@@ -3,6 +3,17 @@
    
         <div class="page-heading">
 
+            <v-layout row justify-center>
+                <v-dialog v-model="loading" persistent fullscreen content-class="loading-dialog">
+                    <v-container fill-height>
+                    <v-layout row justify-center align-center>
+                        <v-progress-circular indeterminate :size="70" :width="7" color="purple"></v-progress-circular>
+                    </v-layout>
+                    </v-container>
+                </v-dialog>
+            </v-layout>
+
+
             <div class="container">
                 <div class="row">
                     <div class="page-title">
@@ -97,13 +108,15 @@ export default {
     email:"",
     email_error: false,
     email_success: false,
-    loading: true,
+    loading: false,
   }),
 
   methods:{
 
       sendPasswordResetLink(){
           
+          this.loading = true;
+
           ApiService.get("user/getuser/"+this.email).then((response)=>{
 
               if(response.data.genralErrorCode === 8000){
@@ -117,6 +130,8 @@ export default {
                         
                         if(response.status == 200){
 
+                            this.loading = false;
+
                             this.email="";
 
                             this.email_success = true;
@@ -126,6 +141,8 @@ export default {
                                 },4000);
 
                         }else{
+
+                            this.loading = false;
 
                             this.email_error = true;
 
@@ -139,6 +156,8 @@ export default {
 
              } else if(response.data.genralErrorCode === 8004){
 
+                        this.loading = false;
+
                         this.alertData.alert=response.data.message;
                         this.alertData.alert_type = 'error';
                         this.alertData.display_alert = true;
@@ -151,13 +170,14 @@ export default {
 
           }).catch(()=>{
 
-               this.alertData.alert=this.$store.state.error_message;
-                this.alertData.alert_type = 'error';
-                this.alertData.display_alert = true;
-                
-                setTimeout(()=>{
-                    this.alertData.display_alert = false;
-                },3000);
+            this.loading = false;
+            this.alertData.alert=this.$store.state.error_message;
+            this.alertData.alert_type = 'error';
+            this.alertData.display_alert = true;
+            
+            setTimeout(()=>{
+                this.alertData.display_alert = false;
+            },3000);
           });
 
          
