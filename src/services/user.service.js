@@ -10,7 +10,7 @@ const UserService = {
 
     view_call: (id) => {
 
-        return ApiService.get("/calls/"+id);
+        return ApiService.get("/calls/getCall/"+id);
     },
 
     send_application: (data)=>{

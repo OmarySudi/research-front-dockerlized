@@ -20,7 +20,7 @@
 
                 <ul class="navbar-nav ml-auto">
 
-                    <li class="nav-item active">
+                    <!-- <li class="nav-item active">
                         <a class="nav-link" @click="redirectHome">Home<span class="sr-only">(current)</span></a> 
                     </li>
                     
@@ -30,7 +30,7 @@
 
                      <li class="nav-item" v-if="authenticated">
                         <a class="nav-link" href="#" data-toggle="modal" @click.prevent="logout">Logout</a>
-                    </li>
+                    </li> -->
 
                     <li class="nav-item ml-5" v-if="authenticated">
                         <p style="color: yellow"> Welcome {{ user.first_name }}</p>

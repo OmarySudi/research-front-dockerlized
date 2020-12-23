@@ -18,6 +18,33 @@
             </div>
         </div>
 
+        <div class="page-heading">
+
+            <div class="container">
+                <div class="row">
+                    <div class="page-title">
+                        <h4>Call</h4>
+                        <ul>
+                            <!-- <li><a href="https://rm.udsm.ac.tz" title="">Home</a></li> -->
+                            <li><router-link to="/">Home</router-link></li>
+
+                             <template v-if="authenticated && user !==null">
+                              <li><span>&#8725;</span></li>
+                              <li><a href="#" @click="signOut">Logout</a></li>
+
+                            </template>
+                            
+                            <li><span>&#8725;</span></li>
+                            <li>Call</li>
+                        </ul>
+                    </div><!-- Page Title -->
+                </div>
+                <!--./row -->
+            </div>
+            <!--./container -->
+        </div>
+      
+
         <div class="row">
 
                 <div class="col-sm-12">
@@ -47,8 +74,35 @@
                                 </div>
                                 
                                 <!-- <button class="mt-4 btn btn-primary pull-right" :disabled="user_call_exist" data-toggle="modal" data-target="#applyModal">APPLY</button> -->
-                                <button class="mt-4 btn btn-primary pull-right" data-toggle="modal" data-target="#applyModal">APPLY</button>
-                               
+                              
+                                    <div class="pull-right" v-if="authenticated == false">
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <button 
+                                                    class="mt-4 btn btn-primary" 
+                                                    v-on="on" 
+                                                    v-bind="attrs" 
+                                                    :disabled="true"
+                                                    data-target="#applyModal"
+                                                >
+                                                APPLY
+                                                </button>
+                                            </template>
+                                            <span>Please login to apply</span>
+                                        </v-tooltip>
+                                     </div>
+
+                                     <div class="pull-right" v-if="authenticated">
+                                        <button 
+                                            class="mt-4 btn btn-primary" 
+                                            data-toggle="modal"
+                                            data-target="#applyModal"
+                                        >
+                                        APPLY
+                                        </button>
+                                           
+                                     </div>
+                                
                             </div>
                         </div>
                      </center>
@@ -60,7 +114,7 @@
 import UserService from '@/services/user.service'
 //import axios from 'axios'
 // import SystemService from '@/services/system.service'
-import {mapGetters} from 'vuex'
+import {mapActions,mapGetters} from 'vuex'
 import Alert from '@/components/Alert.vue'
 import Mixin from '@/mixins/mixins.js'
 export default {
@@ -80,7 +134,12 @@ export default {
     }),
 
     methods:{
+        ...mapActions(['logout']),
 
+        signOut(){
+        
+            this.logout();
+         },
         // check_if_user_has_applied(){
 
         //     let data = {
@@ -169,7 +228,7 @@ export default {
     },
 
     computed:{
-        ...mapGetters(['user'])
+        ...mapGetters(['user','authenticated']),
     },
 
     created(){

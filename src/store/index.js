@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 
 // imported modules
 import auth from './modules/auth';
+import store from '@/store'
+import router from '@/router'
 import SystemService from '@/services/system.service'
 import ApiService from '@/services/api'
 import TokenService from '@/services/storage'
@@ -84,13 +86,14 @@ export default new Vuex.Store({
 
     async logout(){
 
-        this.$store.commit('LOGOUT_SUCCESS')
+       // this.$store.commit('LOGOUT_SUCCESS')
+        store.commit('LOGOUT_SUCCESS')
         TokenService.removeToken();
         ApiService.removeHeader()
         ApiService.unmount401Interceptor();
 
-        this.$router.push('/').catch(()=>{});
-        this.$router.go('/');
+        router.push('/').catch(()=>{});
+        router.go('/');
 
     },
 

@@ -1,6 +1,32 @@
 <template>
     <div class="container-fluid">
 
+      <div class="page-heading">
+
+            <div class="container">
+                <div class="row">
+                    <div class="page-title">
+                        <h4>ADMIN</h4>
+                        <ul>
+                            <!-- <li><a href="https://rm.udsm.ac.tz" title="">Home</a></li> -->
+                            <li><router-link to="/">Home</router-link></li>
+
+                             <template v-if="authenticated && user !==null">
+                              <li><span>&#8725;</span></li>
+                              <li><a href="#" @click="signOut">Logout</a></li>
+
+                            </template>
+
+                            <li><span>&#8725;</span></li>
+                            <li>Admin</li>
+                        </ul>
+                    </div><!-- Page Title -->
+                </div>
+                <!--./row -->
+            </div>
+            <!--./container -->
+        </div>
+
         <Alert v-bind:alertData="alertData"/>
 
         <v-dialog v-model="userDialog" max-width="450">
@@ -1170,7 +1196,12 @@ export default {
 
     methods: {
 
-      ...mapActions(['setCalls']),
+      ...mapActions(['setCalls','logout']),
+
+      signOut(){
+        
+      this.logout();
+    },
 
       documentUpdated(){
 
@@ -2022,7 +2053,7 @@ export default {
 
     computed:{
       
-      ...mapGetters(['getCalls','getAreas']),
+      ...mapGetters(['getCalls','getAreas','user','authenticated']),
 
       areaTitle () {
         return this.area.id === '' ? 'New Area' : 'Edit Area'

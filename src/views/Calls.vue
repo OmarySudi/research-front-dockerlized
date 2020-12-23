@@ -3,11 +3,30 @@
    
    <div class="container-fluid">
       
-     <div v-if="!authenticated">
-      <center>
-        <span class="text-danger font-weight-bold">Login to apply for a call</span>
-      </center>
-     </div>
+     <div class="page-heading">
+
+            <div class="container">
+                <div class="row">
+                    <div class="page-title">
+                        <h4>Calls</h4>
+                        <ul>
+                            <!-- <li><a href="https://rm.udsm.ac.tz" title="">Home</a></li> -->
+                            <li><router-link to="/">Home</router-link></li>
+                             <template v-if="authenticated && user !==null">
+                              <li><span>&#8725;</span></li>
+                              <li><a href="#" @click="signOut">Logout</a></li>
+
+                            </template>
+
+                            <li><span>&#8725;</span></li>
+                            <li>Calls</li>
+                        </ul>
+                    </div><!-- Page Title -->
+                </div>
+                <!--./row -->
+            </div>
+            <!--./container -->
+      </div>
    
     <v-data-table
       :headers="call_headers"
@@ -24,7 +43,6 @@
           <v-btn
             @click.prevent="viewDetail(item)" 
             small
-            :disabled="!authenticated"
             color="primary"
           >
             VIEW DETAILS
@@ -63,15 +81,21 @@ export default {
 
   }),
   methods:{
-    ...mapActions(['setCalls']),
+    ...mapActions(['setCalls','logout']),
+
+     signOut(){
+        
+      this.logout();
+    },
 
     viewDetail(item){
 
       this.$router.push({name: 'call', params: {id: item.id}});
     },
   },
+
   computed: {
-    ...mapGetters(['getCalls','authenticated']),
+    ...mapGetters(['getCalls','user','authenticated']),
   },
 
   created(){

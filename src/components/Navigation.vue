@@ -5,8 +5,6 @@
       <router-link to="/login">Login</router-link> |
 
       <template v-if="authenticated && user !==null">
-
-         <a href="#" @click="signOut">Logout</a>
          
          {{ user.name}}
 
