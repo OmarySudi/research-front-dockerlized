@@ -13,6 +13,11 @@ const SysteService = {
         return ApiService.get("/funders/index");
     },
 
+    fetchAllAdmins: ()=>{
+
+        return ApiService.get("/user/admins");
+    },
+
     fetchFunderNames: ()=>{
 
         return ApiService.get("/funders/names");

@@ -419,6 +419,9 @@
                     <a class="list-group-item list-group-item-action" @click="fetchAllFunders" data-toggle="list" href="#AllFunders" role="tab">All funders</a>
                     <a class="list-group-item list-group-item-action" @click="fetchAllAreas" data-toggle="list" href="#Areas" role="tab">Areas of research</a>
                     
+
+                    <a v-if="user.research_system_admin_admin" class="list-group-item list-group-item-action" @click="fetchAllAdmins" data-toggle="list" href="#Admins" role="tab">Administrators</a>
+                    
                   </div>
             </div>
 
@@ -626,6 +629,155 @@
                                       <v-spacer></v-spacer>
                                       <v-btn color="blue darken-1" text @click="closeAreaDialog">Cancel</v-btn>
                                       <v-btn color="blue darken-1" text @click="saveArea">Save</v-btn>
+                                    </v-card-actions>
+                                  </v-card>
+                                </v-dialog>
+                              </v-toolbar>
+                            </template>
+                            <template v-slot:item.actions="{ item }">
+
+                              <button 
+                                type="button" 
+                                @click.prevent="editArea(item)" 
+                                class="btn btn-sm btn-success mr-2">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                              </button>
+
+                              <button 
+                                type="button" 
+                                @click="deleteArea(item)" 
+                                class="btn  btn-sm btn-danger">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                              </button>
+                            </template>
+                           
+                          </v-data-table>
+                    </div>
+
+
+                     <div class="tab-pane ml-5" id="Admins" role="tabpanel" style="width:70%">
+                         <v-data-table
+                            :headers="admin_headers"
+                            :items="admin_objects"
+                            sort-by="name"
+                            class="elevation-1"
+                          >
+                            <template v-slot:top>
+                              <v-toolbar flat color="white">
+                                <v-toolbar-title>SYSTEM ADMINISTRATORS</v-toolbar-title>
+                                <v-divider
+                                  class="mx-4"
+                                  inset
+                                  vertical
+                                ></v-divider>
+                                <v-spacer></v-spacer>
+                                <v-dialog v-model="admin_dialog" persistent max-width="500px">
+                                  <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                      color="primary"
+                                      dark
+                                      class="mb-2"
+                                      v-bind="attrs"
+                                      v-on="on"
+                                    >Add New</v-btn>
+                                  </template>
+                                  <v-card>
+                                    <v-card-title>
+                                      <span class="text-center">{{ adminTitle }} </span>
+                                    </v-card-title>
+
+                                    <v-card-text>
+                                      <v-container>
+                                        <v-row>
+                                          <v-col cols="12" sm="4" md="4">
+                                            <v-text-field 
+                                              v-model="admin.first_name" 
+                                              label="First Name"
+                                            >
+                                            </v-text-field>
+                                          </v-col>
+
+                                          <v-col cols="12" sm="4" md="4">
+                                            <v-text-field 
+                                              v-model="admin.middle_name" 
+                                              label="Middle Name"
+                                            >
+                                            </v-text-field>
+                                          </v-col>
+
+                                           <v-col cols="12" sm="4" md="4">
+                                            <v-text-field 
+                                              v-model="admin.last_name" 
+                                              label="Last Name"
+                                            >
+                                            </v-text-field>
+                                          </v-col>
+
+                                        </v-row>
+
+                                        <v-row>
+                                          <v-col cols="12" sm="4" md="4">
+                                            <v-text-field 
+                                              v-model="admin.email" 
+                                              label="Email"
+                                            >
+                                            </v-text-field>
+                                          </v-col>
+
+                                          <v-col cols="12" sm="4" md="4">
+                                            <v-text-field 
+                                              v-model="admin.mobile_number" 
+                                              label="Mobile Number"
+                                            >
+                                            </v-text-field>
+                                          </v-col>
+
+                                           <v-col cols="12" sm="4" md="4">
+                                            <v-text-field 
+                                              v-model="admin.department" 
+                                              label="Department"
+                                            >
+                                            </v-text-field>
+                                          </v-col>
+
+                                        </v-row>
+
+                                         <v-row>
+                                          <v-col cols="12" sm="4" md="4">
+                                            <v-text-field 
+                                              v-model="admin.faculty" 
+                                              label="Facult"
+                                            >
+                                            </v-text-field>
+                                          </v-col>
+
+                                          <v-col cols="12" sm="4" md="4">
+                                            <v-text-field 
+                                              v-model="admin.password" 
+                                              label="Password"
+                                            >
+                                            </v-text-field>
+                                          </v-col>
+
+                                           <v-col cols="12" sm="4" md="4">
+                                            <v-text-field 
+                                              v-model="admin.password_confirm" 
+                                              label="Password Confirm"
+                                            >
+                                            </v-text-field>
+                                          </v-col>
+
+                                        </v-row>
+                                        <div class="alert alert-danger" role="alert" v-show="display_area_validation_error">
+                                          You are required to name field
+                                        </div>
+                                      </v-container>
+                                    </v-card-text>
+
+                                    <v-card-actions>
+                                      <v-spacer></v-spacer>
+                                      <v-btn color="blue darken-1" text @click="closeAdminDialog">Cancel</v-btn>
+                                      <v-btn color="blue darken-1" text @click="saveAdmin">Save</v-btn>
                                     </v-card-actions>
                                   </v-card>
                                 </v-dialog>
@@ -1051,6 +1203,8 @@ export default {
         areas_of_research: [],
         areas_objects:[],
 
+        admin_objects:[],
+
         //call form fields
         budget:'',
         funder:'',
@@ -1143,6 +1297,17 @@ export default {
           { text: 'ACTIONS', value: 'actions', class: 'font-weight-bold text-body-1',sortable: false },
         ],
 
+        admin_headers:[
+          {
+            text: 'NAME',
+            align: 'start',
+            value: 'first_name',
+            class: 'font-weight-bold text-body-1'
+          },
+          { text: 'EMAIL', class: 'font-weight-bold text-body-1', value: 'email' },
+          { text: 'ACTIONS', class: 'font-weight-bold text-body-1', value: 'actions', sortable: false },
+        ],
+
         funders:[],
         list_of_funders:[],
         fundersMap:{},
@@ -1172,12 +1337,36 @@ export default {
         ],
 
         area_dialog: false,
+        admin_dialog: false,
 
         area:{
 
           'id':'',
           'name':'',
           'description':''
+        },
+
+        admin:{
+          'first_name':'',
+          'last_name':'',
+          'email':'',
+          'mobile_number':'',
+          'faculty':'',
+          'department':'',
+          'password':'',
+          'password_confirm':'',
+        },
+
+        default_admin:{
+
+          'first_name':'',
+          'last_name':'',
+          'email':'',
+          'mobile_number':'',
+          'faculty':'',
+          'department':'',
+          'password':'',
+          'password_confirm':'',
         },
 
         default_area:{
@@ -1202,6 +1391,21 @@ export default {
         
       this.logout();
     },
+
+    saveAdmin(){
+
+    },
+
+    fetchAllAdmins(){
+
+       SystemService.fetchAllAdmins().then((response)=>{
+        
+        this.admin_objects = response.data.objects;
+
+       });
+
+    },
+  
 
       documentUpdated(){
 
@@ -1926,6 +2130,13 @@ export default {
 
       },
 
+      closeAdminDialog(){
+
+        this.admin_dialog = false;
+
+        this.admin = Object.assign({}, this.default_admin)
+      },
+
        async saveArea(){
 
         if(this.area.id === '')
@@ -2057,6 +2268,11 @@ export default {
 
       areaTitle () {
         return this.area.id === '' ? 'New Area' : 'Edit Area'
+      },
+
+      adminTitle (){
+
+        return this.admin.id === '' ? 'New Admin' : 'Edit Admin'
       },
 
       funderNameErrors() {

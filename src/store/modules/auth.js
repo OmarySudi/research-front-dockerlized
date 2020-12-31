@@ -126,7 +126,7 @@ export default {
                             //     name:'Home'
                             // });
 
-                            if(store.getters.user.research_system_admin_admin == 1)
+                            if(store.getters.user.research_system_admin_role == "ROLE_admin")
                             {
                                 router.replace({
                                     name:'Admin'
