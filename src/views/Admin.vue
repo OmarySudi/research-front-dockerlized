@@ -3,6 +3,16 @@
 
       <div class="page-heading">
 
+            <v-layout row justify-center>
+                <v-dialog v-model="loading" persistent fullscreen content-class="loading-dialog">
+                    <v-container fill-height>
+                    <v-layout row justify-center align-center>
+                        <v-progress-circular indeterminate :size="70" :width="7" color="purple"></v-progress-circular>
+                    </v-layout>
+                    </v-container>
+                </v-dialog>
+            </v-layout>
+
             <div class="container">
                 <div class="row">
                     <div class="page-title">
@@ -1132,6 +1142,7 @@ export default {
 
         delete_user_dialog: false,
         make_admin_dialog: false,
+        loading:false,
         current_user:[],
 
         //call form fields
@@ -1346,7 +1357,7 @@ export default {
       .catch(()=>{
 
         this.showErrorAlert(this.$store.state.error_message);
-        
+
       });
     },
 
@@ -1701,6 +1712,8 @@ export default {
 
       async savePost(){
 
+        this.loading = true;
+
         if(this.fileTypeError == true){
 
           this.fileTypeDialog = true;
@@ -1759,18 +1772,22 @@ export default {
             
           await AdminService.createCall(call).then((response)=>{
 
+           
+
             switch(response.data.genralErrorCode){
 
               case 8000:
+                  this.loading = false;
                   this.showSuccessAlert(response.data.message);
                 break;
 
               case 8005:
+                 this.loading = false;
                   this.showErrorAlert(response.data.message);
                 break;
             }
           }).catch(()=>{
-
+                 this.loading = false;
                 this.showErrorAlert(this.$store.state.error_message);
           });
 
