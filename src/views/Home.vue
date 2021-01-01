@@ -842,7 +842,6 @@ export default {
 
     registrationPasswordErrors() {
           
-
             const errors = [];
             if (!this.$v.registration_password.$dirty) return errors;
             !this.$v.registration_password.required && errors.push('Password is required');

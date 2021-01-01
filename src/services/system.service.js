@@ -15,7 +15,7 @@ const SysteService = {
 
     fetchAllAdmins: ()=>{
 
-        return ApiService.get("/user/admins");
+        return ApiService.get("/user/index");
     },
 
     fetchFunderNames: ()=>{
@@ -45,6 +45,16 @@ const SysteService = {
     fetchBids: (id)=>{
         
         return ApiService.get("/bids/fetch-bids/"+id);
+    },
+
+    deleteUser: (id)=>{
+
+        return ApiService.post("/user/delete/"+id);
+    },
+
+    makeAdmin: (id)=>{
+        
+        return ApiService.post("/user/make-admin/"+id);
     }
 }
 
