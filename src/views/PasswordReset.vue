@@ -124,12 +124,12 @@ export default {
                     let data = new FormData();
                     data.append('email',this.email);
                     data.append('link',"http://localhost:8080/password/newpassword/"+this.email);
-                    data.append('from',"kekovasudi@gmail.com")
+                    data.append('from',"duce.publicservice@gmail.com")
                     
-                    ApiService.post("http://localhost:8085/password/reset",data).then((response)=>{
+                    ApiService.post("http://localhost:8028/password/reset",data).then((response)=>{
                         
                         if(response.status == 200){
-
+                            
                             this.loading = false;
 
                             this.email="";
@@ -140,8 +140,7 @@ export default {
                                     this.email_success = false;
                                 },4000);
 
-                        }else{
-
+                        }else {
                             this.loading = false;
 
                             this.email_error = true;
@@ -152,6 +151,17 @@ export default {
 
                                 },4000);
                         }
+                    }).catch(()=>{
+
+                        this.loading = false;
+
+                        this.email_error = true;
+
+                        setTimeout(()=>{
+
+                                this.email_error = false;
+
+                        },8000);
                     });
 
              } else if(response.data.genralErrorCode === 8004){
