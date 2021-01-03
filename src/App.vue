@@ -8,9 +8,9 @@
     <nav class="navbar navbar-expand-md navbar-light pt-3  navbar-dark sticky-top header">
         <div class="container-fluid">
 
-            <p class="navbar-brand font-weight-bold ml-5 pl-5 brand">
+            <!-- <p class="navbar-brand font-weight-bold ml-5 pl-5 brand">
                 CONSULTANCY CALLS
-            </p>
+            </p> -->
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

@@ -310,11 +310,12 @@
         <div class="row">
             <div class="col-md-8 h-100">
 
-              <p><strong>What is RIMS</strong></p>
+              <!-- <p><strong>What is RIMS</strong></p> -->
+              <p><strong>Consultancy Management System(CMS)</strong></p>
 
-              <p>The UDSM RIMS is a web-based portal designed to manage research information at the University. The system has four modules, Grants &amp; Proposals, Publications Vetting, Research Clearance and Research Project Management. UDSM RIMS is developed under the leadership of the Office of the Deputy Vice Chancellor – Research.</p>
+              <p>This is a web-based portal designed to broadcast consultancy opportunities and it is managaged by the office of public service.</p>
 
-              <p>UDSM RIMS will help staff &amp; students to save time and effort making it easier to search for research information,apply for research clearances, registering research proposals, submission of publications for vetting and application for research grants.</p>
+              <p>The system will help consultants to get real time information about consultancy opportunities advertised all over the globe</p>
 
               <p><strong>How to Login</strong></p>
 
